@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:workouttimer/models/workout_timer.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,7 +15,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: ChangeNotifierProvider(
+        create: (_) => WorkoutTimer(),
+        child: MyHomePage(),
+      ),
     );
   }
 }
@@ -24,84 +29,60 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Timer _timer;
-  var _duration = 30;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    startTimer();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
-  void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      print('tick: $_duration');
-      setState(() {
-        if (_duration <= 0) {
-          _duration = 30;
-        } else {
-          _duration--;
-        }
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        // in the middle of the parent.
-        child: Stack(children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Expanded(
-                child: Opacity(
-                  opacity: _duration <= 30 ? 1.0 : 0.3,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.green,
+      body: Consumer<WorkoutTimer>(
+        builder: (context, workoutTimer, child) => Center(
+          // in the middle of the parent.
+          child: Stack(children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(
+                  child: Opacity(
+                    opacity: workoutTimer.ticker <= 30 ? 1.0 : 0.3,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Opacity(
-                  opacity: _duration <= 20 ? 1.0 : 0.3,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.green,
+                Expanded(
+                  child: Opacity(
+                    opacity: workoutTimer.ticker <= 20 ? 1.0 : 0.3,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Opacity(
-                  opacity: _duration <= 10 ? 1.0 : 0.3,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.green,
+                Expanded(
+                  child: Opacity(
+                    opacity: workoutTimer.ticker <= 10 ? 1.0 : 0.3,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          Center(
-            child: Text(
-              '$_duration',
-              style: TextStyle(fontSize: 48),
+              ],
             ),
-          )
-        ]),
+            Center(
+              child: RaisedButton(
+                child: Text(
+                  '${workoutTimer.ticker}',
+                  style: TextStyle(fontSize: 48),
+                ),
+                onPressed:  workoutTimer.isRunning ? workoutTimer.stopTimer : workoutTimer.startTimer,
+              ),
+            )
+          ]),
+        ),
       ),
     );
   }
