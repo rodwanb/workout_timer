@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: ChangeNotifierProvider(
-        create: (_) => Time(duration: 30),
+        create: (_) => Time(),
         child: MyHomePage(),
       ),
     );
@@ -29,31 +29,38 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
+    return Consumer<Time>(
+      builder: (context, time, child) => Scaffold(
+      appBar: AppBar(
+        backgroundColor: time.mode == TimeMode.work ? Colors.orangeAccent : Colors.green,
+        title: const Text('Workout Timer',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black45),
+        ),
+      ),
+      body: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Colors.orangeAccent, Colors.deepOrange],
+            colors: time.mode == TimeMode.work ? [Colors.orangeAccent, Colors.deepOrange] : [Colors.green, Colors.lightGreenAccent],
           ),
         ),
-        child: Consumer<Time>(
-          builder: (context, time, child) => Column(
+        child: Column(
             children: <Widget>[
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Text('Work',
+                    Text(time.mode == TimeMode.work ? 'Work' : 'Rest',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 28, fontWeight: FontWeight.normal, fontStyle: FontStyle.italic, color: Colors.black45),
+                      style: TextStyle(fontSize: 26, fontWeight: FontWeight.normal, fontStyle: FontStyle.italic, color: Colors.black45),
                     ),
                     Text(
                       '0:${time.ticker}',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 72, fontWeight: FontWeight.bold, color: Colors.black45),
+                      style: TextStyle(fontSize: 80, fontWeight: FontWeight.bold, color: Colors.black45),
                     ),
                   ],
                 ),
