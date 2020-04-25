@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:workouttimer/models/time.dart';
+import 'package:workouttimer/screens/add_edit_workout_timer.dart';
 import 'package:workouttimer/screens/home_screen.dart';
-import 'package:workouttimer/screens/play_workout_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,7 +14,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (_) => HomeScreen()
+        '/': (_) => HomeScreen(),
+        AddEditWorkoutTimer.routeName: (_) => AddEditWorkoutTimer(),
       },
     );
   }

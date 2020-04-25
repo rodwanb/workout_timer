@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workouttimer/screens/add_edit_workout_timer.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -9,7 +10,9 @@ class HomeScreen extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(AddEditWorkoutTimer.routeName);
+            },
           )
         ],
       ),
