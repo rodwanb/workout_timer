@@ -4,12 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:workouttimer/models/time.dart';
 import 'package:workouttimer/widgets/time_control_button.dart';
 
-class PlayWorkoutScreen extends StatefulWidget {
-  @override
-  _PlayWorkoutScreenState createState() => _PlayWorkoutScreenState();
-}
+class PlayWorkoutScreen extends StatelessWidget {
+  static const routeName = '/play-workout/{id}';
 
-class _PlayWorkoutScreenState extends State<PlayWorkoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
