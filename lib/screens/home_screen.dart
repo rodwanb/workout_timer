@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workouttimer/models/workout_timers.dart';
@@ -11,7 +13,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Workout Timer'),
         actions: <Widget>[
-          IconButton(
+          if (Platform.isIOS) IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
               Navigator.of(context).pushNamed(AddEditWorkoutTimer.routeName);
@@ -31,6 +33,15 @@ class HomeScreen extends StatelessWidget {
                     child: WorkoutTimerItem(),
                   ),
                 ),
+        ),
+      ),
+      floatingActionButton: Platform.isIOS ? null : Padding(
+        padding: const EdgeInsets.only(bottom: 20.0, right: 8.0),
+        child: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.of(context).pushNamed(AddEditWorkoutTimer.routeName);
+          },
         ),
       ),
     );

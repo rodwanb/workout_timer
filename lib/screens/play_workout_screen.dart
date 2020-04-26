@@ -2,10 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:workouttimer/models/time.dart';
+import 'package:workouttimer/models/workout_timer.dart';
+import 'package:workouttimer/models/workout_timers.dart';
+import 'package:workouttimer/screens/add_edit_workout_timer.dart';
 import 'package:workouttimer/widgets/time_control_button.dart';
 
-class PlayWorkoutScreen extends StatelessWidget {
+class PlayWorkoutScreen extends StatefulWidget {
   static const routeName = '/play-workout/{id}';
+
+  @override
+  _PlayWorkoutScreenState createState() => _PlayWorkoutScreenState();
+}
+
+class _PlayWorkoutScreenState extends State<PlayWorkoutScreen> {
+  var _didInit = false;
+  WorkoutTimer _selectedWorkoutTimer;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_didInit) {
+      return;
+    }
+
+    final workoutTimerId = ModalRoute.of(context).settings.arguments as String;
+    if (workoutTimerId == null) {
+      return;
+    }
+
+    _selectedWorkoutTimer = Provider.of<WorkoutTimers>(context, listen: false)
+        .findById(workoutTimerId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,21 +62,24 @@ class PlayWorkoutScreen extends StatelessWidget {
   Widget _buildAppBar(BuildContext context) {
     var time = Provider.of<Time>(context);
     return AppBar(
-        backgroundColor:
-            time.mode == TimeMode.work ? Colors.orangeAccent : Colors.green,
-        title: const Text(
-          'Workout Timer',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black45),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.edit,
-            ),
-            color: Colors.black45,
-            onPressed: () {},
-          )
-        ],
+      backgroundColor:
+          time.mode == TimeMode.work ? Colors.orangeAccent : Colors.green,
+      title: Text(
+        _selectedWorkoutTimer.name,
+      ),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.edit,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushNamed(
+              AddEditWorkoutTimer.routeName,
+              arguments: _selectedWorkoutTimer.id,
+            );
+          },
+        )
+      ],
     );
   }
 

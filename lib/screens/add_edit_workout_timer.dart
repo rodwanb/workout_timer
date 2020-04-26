@@ -30,7 +30,7 @@ class _AddEditWorkoutTimerState extends State<AddEditWorkoutTimer> {
     }
 
     _editedWorkoutTimer =
-        Provider.of<WorkoutTimers>(context).findById(workoutTimerId);
+        Provider.of<WorkoutTimers>(context, listen: false).findById(workoutTimerId);
     _initValues = _editedWorkoutTimer.copy();
   }
 

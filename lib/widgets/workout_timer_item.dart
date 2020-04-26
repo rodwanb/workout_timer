@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workouttimer/models/workout_timer.dart';
-import 'package:workouttimer/screens/add_edit_workout_timer.dart';
+import 'package:workouttimer/screens/play_workout_screen.dart';
 
 class WorkoutTimerItem extends StatelessWidget {
   const WorkoutTimerItem();
@@ -10,7 +10,7 @@ class WorkoutTimerItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<WorkoutTimer>(
       builder: (context, workoutTimer, child) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
+        padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
         child: Card(
           elevation: 3,
           child: ListTile(
@@ -25,10 +25,8 @@ class WorkoutTimerItem extends StatelessWidget {
             title: Text(workoutTimer.name),
             subtitle: Text('HIIT'),
             onTap: () {
-//            Navigator.of(context)
-//                .pushNamed(PlayWorkoutScreen.routeName);
               Navigator.of(context).pushNamed(
-                AddEditWorkoutTimer.routeName,
+                PlayWorkoutScreen.routeName,
                 arguments: workoutTimer.id,
               );
             },
