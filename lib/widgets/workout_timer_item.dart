@@ -6,6 +6,20 @@ import 'package:workouttimer/screens/play_workout_screen.dart';
 class WorkoutTimerItem extends StatelessWidget {
   const WorkoutTimerItem();
 
+  String _format(Duration duration) {
+    String twoDigits(int n) => n >= 10 ? '$n' : '0$n';
+
+    var minutes = twoDigits(duration.inMinutes.remainder(60));
+    var seconds = twoDigits(duration.inSeconds.remainder(60));
+
+    var hours = '';
+    if (duration.inHours > 0) {
+      hours = '${twoDigits(duration.inHours)}:';
+    }
+    return '$hours$minutes:$seconds';
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Consumer<WorkoutTimer>(
@@ -18,7 +32,7 @@ class WorkoutTimerItem extends StatelessWidget {
               child: FittedBox(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text('30:00'),
+                  child: Text(_format(workoutTimer.totalDuration)),
                 ),
               ),
             ),

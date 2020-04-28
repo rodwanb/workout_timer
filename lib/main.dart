@@ -17,14 +17,11 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => WorkoutTimers([
-            WorkoutTimer(
+            WorkoutTimer.standard().copyWith(
               id: UniqueKey().toString(),
-              name: 'Sample Workout Timer',
+              name: 'Test Workout',
             )
           ]),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => Time(),
         ),
       ],
       child: MaterialApp(

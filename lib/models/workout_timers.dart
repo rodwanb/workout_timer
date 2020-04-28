@@ -15,7 +15,7 @@ class WorkoutTimers extends ChangeNotifier {
   }
 
   void add(WorkoutTimer timer) {
-    _items.add(timer.copy(id: UniqueKey().toString()));
+    _items.add(timer.copyWith(id: UniqueKey().toString()));
     notifyListeners();
   }
 

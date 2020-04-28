@@ -13,8 +13,8 @@ class AddEditWorkoutTimer extends StatefulWidget {
 class _AddEditWorkoutTimerState extends State<AddEditWorkoutTimer> {
   final _form = GlobalKey<FormState>();
   var _didInit = false;
-  var _editedWorkoutTimer = WorkoutTimer();
-  var _initValues = WorkoutTimer();
+  var _editedWorkoutTimer = WorkoutTimer.standard();
+  var _initValues = WorkoutTimer.standard();
 
   @override
   void didChangeDependencies() {
@@ -31,7 +31,7 @@ class _AddEditWorkoutTimerState extends State<AddEditWorkoutTimer> {
 
     _editedWorkoutTimer =
         Provider.of<WorkoutTimers>(context, listen: false).findById(workoutTimerId);
-    _initValues = _editedWorkoutTimer.copy();
+    _initValues = _editedWorkoutTimer.copyWith();
   }
 
   Future<void> _saveForm() async {
@@ -54,6 +54,10 @@ class _AddEditWorkoutTimerState extends State<AddEditWorkoutTimer> {
     Navigator.of(context).pop();
   }
 
+  String _format(Duration duration) {
+    return '${duration.inSeconds}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +76,7 @@ class _AddEditWorkoutTimerState extends State<AddEditWorkoutTimer> {
           key: _form,
           child: ListView(
             children: <Widget>[
+              SizedBox(height: 16),
               TextFormField(
                 initialValue: _initValues.name,
                 decoration: InputDecoration(labelText: 'Name'),
@@ -86,9 +91,170 @@ class _AddEditWorkoutTimerState extends State<AddEditWorkoutTimer> {
                   return null;
                 },
                 onSaved: (value) {
-                  _editedWorkoutTimer = _editedWorkoutTimer.copy(name: value);
+                  _editedWorkoutTimer = _editedWorkoutTimer.copyWith(name: value);
                 },
               ),
+              SizedBox(height: 16),
+              TextFormField(
+                initialValue: '${_initValues.countdownDuration.inSeconds}',
+                decoration: InputDecoration(labelText: 'Countdown'),
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                onFieldSubmitted: (value) {
+                  print('onFieldSubmitted: $value');
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please provide a countdown duration';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  final parsedValue = int.tryParse(value) ?? 0;
+                  _editedWorkoutTimer = _editedWorkoutTimer.copyWith(countdownDuration: Duration(seconds: parsedValue));
+                },
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                initialValue: _format(_initValues.warmUpDuration),
+                decoration: InputDecoration(labelText: 'Warm-up'),
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                onFieldSubmitted: (value) {
+                  print('onFieldSubmitted: $value');
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please provide a warm-up duration';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  final parsedValue = int.tryParse(value) ?? 0;
+                  _editedWorkoutTimer = _editedWorkoutTimer.copyWith(warmUpDuration: Duration(seconds: parsedValue));
+                },
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                initialValue: _format(_initValues.exerciseDuration),
+                decoration: InputDecoration(labelText: 'Exercise'),
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                onFieldSubmitted: (value) {
+                  print('onFieldSubmitted: $value');
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please provide an exercise duration';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  final parsedValue = int.tryParse(value) ?? 0;
+                  _editedWorkoutTimer = _editedWorkoutTimer.copyWith(exerciseDuration: Duration(seconds: parsedValue));
+                },
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                initialValue: _format(_initValues.changeOverDuration),
+                decoration: InputDecoration(labelText: 'Change-over'),
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                onFieldSubmitted: (value) {
+                  print('onFieldSubmitted: $value');
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please provide a change-over duration';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  final parsedValue = int.tryParse(value) ?? 0;
+                  _editedWorkoutTimer = _editedWorkoutTimer.copyWith(changeOverDuration: Duration(seconds: parsedValue));
+                },
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                initialValue: _format(_initValues.restDuration),
+                decoration: InputDecoration(labelText: 'Rest'),
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                onFieldSubmitted: (value) {
+                  print('onFieldSubmitted: $value');
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please provide a rest duration';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  final parsedValue = int.tryParse(value) ?? 0;
+                  _editedWorkoutTimer = _editedWorkoutTimer.copyWith(restDuration: Duration(seconds: parsedValue));
+                },
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                initialValue: '${_initValues.numberOfSets}',
+                decoration: InputDecoration(labelText: 'Sets'),
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.number,
+                onFieldSubmitted: (value) {
+                  print('onFieldSubmitted: $value');
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please provide number of sets';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  final parsedValue = int.tryParse(value) ?? 0;
+                  _editedWorkoutTimer = _editedWorkoutTimer.copyWith(numberOfSets: parsedValue);
+                },
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                initialValue: _format(_initValues.coolDownDuration),
+                decoration: InputDecoration(labelText: 'Cool down'),
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                onFieldSubmitted: (value) {
+                  print('onFieldSubmitted: $value');
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please provide a cool down duration';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  final parsedValue = int.tryParse(value) ?? 0;
+                  _editedWorkoutTimer = _editedWorkoutTimer.copyWith(coolDownDuration: Duration(seconds: parsedValue));
+                },
+              ),
+              SizedBox(height: 16),
+              TextFormField(
+                initialValue: '${_initValues.numberOfRounds}',
+                decoration: InputDecoration(labelText: 'Rounds'),
+                textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.number,
+                onFieldSubmitted: (value) {
+                  print('onFieldSubmitted: $value');
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please provide number of rounds';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  final parsedValue = int.tryParse(value) ?? 0;
+                  _editedWorkoutTimer = _editedWorkoutTimer.copyWith(numberOfRounds: parsedValue);
+                },
+              ),
+              SizedBox(height: 16),
             ],
           ),
         ),
